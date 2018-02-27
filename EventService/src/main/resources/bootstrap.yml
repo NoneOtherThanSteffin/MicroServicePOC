@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: eventservice
+  profiles:
+    active: development
+
+  config:
+    location: http://configserver/
+  cloud:
+    config:
+      discovery:
+        enabled: true
+  zipkin:
+    base-url: http://zipkinserver
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${random.int}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    

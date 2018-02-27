@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: userservice
+  profiles:
+    active: development
+
+  config:
+    location: http://configserver/
+  cloud:
+    config:
+      discovery:
+        enabled: true
+
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${random.int}
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    

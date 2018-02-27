@@ -1,0 +1,62 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.6.RELEASE'
+		springCloudVersion = 'Edgware.SR1'
+		gradleDependenciesManagementPlugin = '0.5.4.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath("io.spring.gradle:dependency-management-plugin:${gradleDependenciesManagementPlugin}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+jar {
+	baseName = 'user-service'
+	version = '0.0.1-SNAPSHOT'
+}
+
+group = 'com.plefs.userservice'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+	//Spring-Boot Dependencies
+    compile("org.springframework.boot:spring-boot-starter") {
+		exclude(module: 'commons-logging')
+    }
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile ("org.springframework.boot:spring-boot-starter-data-jpa")
+    testCompile("org.springframework.boot:spring-boot-starter-test") {
+		exclude(module: 'commons-logging')
+    }
+    
+    //Database dependencies
+    compile ("org.postgresql:postgresql")
+    
+    //External Project Dependencies
+    compile project(':PlefsCore')
+    
+    //Spring-Cloud Related Dependencies
+    compile('org.springframework.cloud:spring-cloud-config-client')
+    compile("org.springframework.cloud:spring-cloud-sleuth-zipkin")
+    compile("org.springframework.cloud:spring-cloud-starter-eureka")
+    
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
